@@ -5,6 +5,12 @@ var player = {
     attackPower: 0,
     counterAttackPower: 0,
 }
+var enemy = {
+    class: "none",
+    healthPoints: 0,
+    attackPower: 0,
+    counterAttackPower: 0,
+}
 var fighter = {
     class: "fighter",
     healthPoints: 20,
@@ -38,6 +44,12 @@ var playerStats = function() {
     console.log(player.attackPower);
     console.log(player.counterAttackPower);
 }
+var enemyStats = function() {
+    console.log(enemy.class);
+    console.log(enemy.healthPoints);
+    console.log(enemy.attackPower);
+    console.log(enemy.counterAttackPower);
+}
 var fighterStats = function() {
     console.log(fighter.class);
     console.log(fighter.healthPoints);
@@ -64,7 +76,7 @@ var rogueStats = function() {
 }
 
 
-/* CHOOSE CHARACTER/REPLACE STATS */
+/* CHOOSE CHARACTER EFFECTS */
 var chooseFighter = function() {
     if (player.class === "none") {     
         player.class = fighter.class;
@@ -72,12 +84,21 @@ var chooseFighter = function() {
         player.attackPower = fighter.attackPower;
         player.counterAttackPower = fighter.counterAttackPower;
         $(".characterChosen").append($(".fighterCard"));
+        $(".characterChosen").css("background-color", "#009933");
+        $(".characterWizard").css("background-color", "#990000");
+        $(".characterCleric").css("background-color", "#990000");
+        $(".characterRogue").css("background-color", "#990000");
     }
     else {
-        alert("you already have a class")
+        enemy.class = fighter.class;
+        enemy.healthPoints = fighter.healthPoints;
+        enemy.attackPower = fighter.attackPower;
+        enemy.counterAttackPower = fighter.counterAttackPower;
+        $(".characterFighter").css("background-color", "rgb(66, 66, 66)");
+        $(".enemyChosen").css("background-color", "#990000");
+        $(".enemyChosen").empty().append($(".fighterCard"));
     }
 }
-
 var chooseWizard = function() {
     if (player.class === "none") {    
         player.class = wizard.class;
@@ -85,12 +106,21 @@ var chooseWizard = function() {
         player.attackPower = wizard.attackPower;
         player.counterAttackPower = wizard.counterAttackPower;
         $(".characterChosen").append($(".wizardCard"));
+        $(".characterChosen").css("background-color", "#009933");
+        $(".characterFighter").css("background-color", "#990000");
+        $(".characterCleric").css("background-color", "#990000");
+        $(".characterRogue").css("background-color", "#990000");
     }
     else {
-        alert("you already have a class")
+        enemy.class = wizard.class;
+        enemy.healthPoints = wizard.healthPoints;
+        enemy.attackPower = wizard.attackPower;
+        enemy.counterAttackPower = wizard.counterAttackPower;
+        $(".characterWizard").css("background-color", "rgb(66, 66, 66)");
+        $(".enemyChosen").css("background-color", "#990000");
+        $(".enemyChosen").empty().append($(".wizardCard"));
     }
 }
-
 var chooseCleric = function() {
     if (player.class === "none") {
         player.class = cleric.class;
@@ -98,51 +128,80 @@ var chooseCleric = function() {
         player.attackPower = cleric.attackPower;
         player.counterAttackPower = cleric.counterAttackPower;
         $(".characterChosen").append($(".clericCard"));
+        $(".characterChosen").css("background-color", "#009933");
+        $(".characterFighter").css("background-color", "#990000");
+        $(".characterWizard").css("background-color", "#990000");
+        $(".characterRogue").css("background-color", "#990000");
     }
     else {
-        alert("you already have a class")
+        enemy.class = cleric.class;
+        enemy.healthPoints = cleric.healthPoints;
+        enemy.attackPower = cleric.attackPower;
+        enemy.counterAttackPower = cleric.counterAttackPower;
+        $(".characterCleric").css("background-color", "rgb(66, 66, 66)");
+        $(".enemyChosen").css("background-color", "#990000");
+        $(".enemyChosen").empty().append($(".clericCard"));
     }
-    }
-
+}
 var chooseRogue = function() {
     if (player.class === "none") {
         player.class = rogue.class;
         player.healthPoints = rogue.healthPoints;
         player.attackPower = rogue.attackPower;
         player.counterAttackPower = rogue.counterAttackPower;
+        $(".characterChosen").css("background-color", "#009933");
+        $(".characterFighter").css("background-color", "#990000");
+        $(".characterWizard").css("background-color", "#990000");
+        $(".characterCleric").css("background-color", "#990000");
         $(".characterChosen").append($(".rogueCard"));
     }
     else {
-        alert("you already have a class")
+        enemy.class = rogue.class;
+        enemy.healthPoints = rogue.healthPoints;
+        enemy.attackPower = rogue.attackPower;
+        enemy.counterAttackPower = rogue.counterAttackPower;
+        $(".characterRogue").css("background-color", "rgb(66, 66, 66)");
+        $(".enemyChosen").css("background-color", "#990000");
+        $(".enemyChosen").empty().append($(".rogueCard"));
     }
+}
+
+var attack = function() {
+    console.log(enemyStats)
 }
 
 
 $(document).ready(function() {
 
-    /* APPLY STATS */
-    $(".fighterCard").on("click", function() {
-        chooseFighter();
-    });
+   
+    /* APPEND CURRENT HP TO CARD */
+    $(".fighterHP").append(fighter.healthPoints);
+    $(".wizardHP").append(wizard.healthPoints);
+    $(".clericHP").append(cleric.healthPoints);
+    $(".rogueHP").append(rogue.healthPoints);
 
-    $(".wizardCard").on("click", function() {
-        chooseWizard();
-    });
-
-    $(".clericCard").on("click", function() {
-        chooseCleric();
-    });
-    
-    $(".rogueCard").on("click", function() {
-        chooseRogue();
-    });
+    /* CHOOSE YOUR CHARACTER */
 
 
+        $(".fighterCard").on("click", function() {
+            chooseFighter();
+        });
+        $(".wizardCard").on("click", function() {
+            chooseWizard();
+        });
+        $(".clericCard").on("click", function() {
+            chooseCleric();
+        });
+        $(".rogueCard").on("click", function() {
+            chooseRogue();
+        });
+
+        $(".attackButton").on("click", function() {
+            enemyStats();
+        });
 
 
-    $(".test").on("click", function() {
-        playerStats();
-    });
+
 
 
 

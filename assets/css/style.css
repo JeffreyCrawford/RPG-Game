@@ -7,9 +7,8 @@
     border-style: solid;
     border-color: rgb(66, 66, 66);
     background-color: rgb(66, 66, 66);
-    margin-left: 3px;
-    margin-right: 3px;
-    padding: 1%;
+    padding: 5px;
+    width: 100%;
 }
 
 .card-text {
@@ -18,7 +17,23 @@
     font-size: 20px;
 }
 
+.HP {
+    font-weight: bold;
+    padding-top: 5px;
+    font-size: 20px;
+    color: white;
+    margin: 0 auto;
+    float: left;    
+}
 
+.HPValue {
+    font-weight: bold;
+    padding-top: 5px;
+    font-size: 20px;
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+}
 
 
 
