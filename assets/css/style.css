@@ -1,8 +1,11 @@
+.combatZone {
+    background-image: "assets/images/background.jpg";
+
+}
 .titleHeader {
     text-align: center;
     color: blue;
 }
-
 .character {
     border-style: solid;
     border-color: rgb(66, 66, 66);
@@ -10,13 +13,11 @@
     padding: 5px;
     width: 100%;
 }
-
 .card-text {
     font-weight: bold;
     text-align: center;
     font-size: 20px;
 }
-
 .HP {
     font-weight: bold;
     padding-top: 5px;
@@ -25,7 +26,6 @@
     margin: 0 auto;
     float: left;    
 }
-
 .HPValue {
     font-weight: bold;
     padding-top: 5px;

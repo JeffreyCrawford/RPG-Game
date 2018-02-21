@@ -166,10 +166,41 @@ var chooseRogue = function() {
     }
 }
 
+/* COMBAT FUNCTIONS */
 var attack = function() {
-    console.log(enemyStats)
+    counterAttack();
+    dealDamage();
+}
+var counterAttack = function() {
+    player.healthPoints = (player.healthPoints - enemy.counterAttackPower)
+    if(player.healthPoints > 0) {
+        $(".playerHP").empty().append(player.healthPoints);
+    }
+    else {
+        $(".characterChosen").empty();
+        $(".characterChosen").css("background-color", "rgb(66, 66, 66)");
+        alert("YOU LOSE!");
+    }
 }
 
+var dealDamage = function() {
+    enemy.healthPoints = (enemy.healthPoints - player.attackPower);
+    if(enemy.healthPoints > 0) {
+        $(".enemyHP").empty().append(enemy.healthPoints);
+    }
+    else {
+        $(".enemyChosen").empty();
+        $(".enemyChosen").css("background-color", "rgb(66, 66, 66)");
+        enemyReset();
+    }
+}
+
+var enemyReset = function () {
+    enemy.class = "none";
+    enemy.healthPoints = 0;
+    enemy.attackPower = 0;
+    enemy.counterAttackPower = 0;
+}
 
 $(document).ready(function() {
 
@@ -197,9 +228,14 @@ $(document).ready(function() {
         });
 
         $(".attackButton").on("click", function() {
-            enemyStats();
+            attack();
         });
 
+
+        $(".test").on("click", function() {
+            playerStats();
+            enemyStats();
+        });
 
 
 
