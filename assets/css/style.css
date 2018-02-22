@@ -1,7 +1,16 @@
+body {
+    background-image: url("https://www.publicdomainpictures.net/pictures/70000/velka/old-parchment.jpg");
+}
 
-.titleHeader {
+.container {
+    font-family: 'MedievalSharp', cursive;
     text-align: center;
-    color: blue;
+
+
+}
+.titleHeader {
+    font-weight: bold;
+    font-size: 60px;
 }
 .character {
     border-style: solid;
@@ -38,19 +47,16 @@ sword {
     margin: 0 auto;
     text-align: center;
 }
-.vs {
-    text-align: center;
-}
-
-.sword {
-    margin-right: -10px;
-}
-
-.graveyardHeader {
-    text-align: center;
-}
 .line {
     border-bottom-style: solid;
+}
+.attackButton {
+    float: left;
+    margin-left: -15px;
+}
+.resetButton {
+    float: right;
+    margin-right: -15px;
 }
 
 

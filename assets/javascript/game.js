@@ -112,6 +112,7 @@ var chooseFighter = function() {
         /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".characterChosen").append($(".fighterCard"));
         $(".characterChosen").addClass("character");
+        $(".characterFighter").removeClass("character");
         $(".characterChosen").css("background-color", "#009933");
         $(".characterWizard").css("background-color", "#990000");
         $(".characterCleric").css("background-color", "#990000");
@@ -124,10 +125,10 @@ var chooseFighter = function() {
         /* MOVES ENEMY CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".enemyChosen").empty().append($(".fighterCard"));
         $(".enemyChosen").addClass("character");
-        $(".characterFighter").css("background-color", "rgb(66, 66, 66)");
         $(".enemyChosen").css("background-color", "#990000");
+        $(".characterFighter").removeClass("character");
+        $(".characterFighter").css("background-color", "");
         $(".vsText").text("VS");
-
     }
 }
 var chooseWizard = function() {
@@ -147,8 +148,9 @@ var chooseWizard = function() {
         enemy = wizard;
         $(".enemyChosen").empty().append($(".wizardCard"));
         $(".enemyChosen").addClass("character");
-        $(".characterWizard").css("background-color", "rgb(66, 66, 66)");
         $(".enemyChosen").css("background-color", "#990000");
+        $(".characterWizard").removeClass("character");
+        $(".characterWizard").css("background-color", "");
         $(".vsText").text("VS");
     }
 }
@@ -159,6 +161,7 @@ var chooseCleric = function() {
         player = cleric;
         $(".characterChosen").append($(".clericCard"));
         $(".characterChosen").addClass("character");
+        $(".characterCleric").removeClass("character");
         $(".characterChosen").css("background-color", "#009933");
         $(".characterFighter").css("background-color", "#990000");
         $(".characterWizard").css("background-color", "#990000");
@@ -169,8 +172,9 @@ var chooseCleric = function() {
         enemy = cleric;
         $(".enemyChosen").empty().append($(".clericCard"));
         $(".enemyChosen").addClass("character");
-        $(".characterCleric").css("background-color", "rgb(66, 66, 66)");
         $(".enemyChosen").css("background-color", "#990000");
+        $(".characterCleric").removeClass("character");
+        $(".characterCleric").css("background-color", "");
         $(".vsText").text("VS");
     }
 }
@@ -181,6 +185,7 @@ var chooseRogue = function() {
         player = rogue;
         $(".characterChosen").append($(".rogueCard"));
         $(".characterChosen").addClass("character");
+        $(".characterRogue").removeClass("character");
         $(".characterChosen").css("background-color", "#009933");
         $(".characterFighter").css("background-color", "#990000");
         $(".characterWizard").css("background-color", "#990000");
@@ -191,8 +196,9 @@ var chooseRogue = function() {
         enemy = rogue;
         $(".enemyChosen").empty().append($(".rogueCard"));
         $(".enemyChosen").addClass("character");
-        $(".characterRogue").css("background-color", "rgb(66, 66, 66)");
         $(".enemyChosen").css("background-color", "#990000");
+        $(".characterRogue").removeClass("character");
+        $(".characterRogue").css("background-color", "");
         $(".vsText").text("VS");
     }
 }
@@ -204,7 +210,7 @@ var attack = function() {
         counterAttack();
         dealDamage();
         player.attackPower = (player.attackPower + player.baseAttackPower);
-        if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true) {
+        if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true && player.healthPoints !== 0 && enemy.healthPoints === 0) {
             $(".vsText").text("YOU WIN");
         }
     }
@@ -229,33 +235,35 @@ var counterAttack = function() {
     }
     /* IF PLAYER IS DEAD, REMOVE THEIR CARD, CHANGE THE COLORS, AND SAY THEY LOSE */
     else {
+        player.healthPoints = 0;
         if(player.class === "fighter") {
             $(".fighterGraveyard").css("background-color", "#009933");
             $(".fighterGraveyard").append($(".fighterCard"));
-            fighter.healthPoints = 0; 
-            $(".fighterHP").empty().append(fighter.healthPoints);
+            $(".fighterGraveyard").addClass("character");
+            $(".fighterHP").empty().append(player.healthPoints);
         }
         else if(player.class === "wizard") {
             $(".wizardGraveyard").css("background-color", "#009933");
             $(".wizardGraveyard").append($(".wizardCard"));
-            wizard.healthPoints = 0; 
-            $(".wizardHP").empty().append(wizard.healthPoints);
+            $(".wizardGraveyard").addClass("character");
+            $(".wizardHP").empty().append(player.healthPoints);
         }
         else if(player.class === "cleric") {
             $(".clericGraveyard").css("background-color", "#009933");
             $(".clericGraveyard").append($(".clericCard"));
-            cleric.healthPoints = 0; 
-            $(".clericHP").empty().append(cleric.healthPoints);
+            $(".clericGraveyard").addClass("character");
+            $(".clericHP").empty().append(player.healthPoints);
         }
         else if(player.class === "rogue") {
             $(".rogueGraveyard").css("background-color", "#009933");
             $(".rogueGraveyard").append($(".rogueCard"));
-            rogue.healthPoints = 0; 
-            $(".rogueHP").empty().append(rogue.healthPoints);
+            $(".rogueGraveyard").addClass("character");
+            $(".rogueHP").empty().append(player.healthPoints);
         }  
         player = resetObject;
         $(".characterChosen").empty();
-        $(".characterChosen").css("background-color", "rgb(66, 66, 66)");
+        $(".characterChosen").css("background-color", "");
+        $(".characterChosen").removeClass("character");
         $(".vsText").text("YOU LOSE");
     }
 }
@@ -276,34 +284,36 @@ var dealDamage = function() {
         }
     }
     else {
+        enemy.healthPoints = 0;
         if(enemy.class === "fighter") {
             $(".fighterGraveyard").css("background-color", "#990000");
             $(".fighterGraveyard").append($(".fighterCard"));
-            fighter.healthPoints = 0; 
-            $(".fighterHP").empty().append(fighter.healthPoints);
+            $(".fighterGraveyard").addClass("character");
+            $(".fighterHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "wizard") {
             $(".wizardGraveyard").css("background-color", "#990000");
             $(".wizardGraveyard").append($(".wizardCard"));
-            wizard.healthPoints = 0;
-            $(".wizardHP").empty().append(wizard.healthPoints);
+            $(".wizardGraveyard").addClass("character");
+            $(".wizardHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "cleric") {
             $(".clericGraveyard").css("background-color", "#990000");
             $(".clericGraveyard").append($(".clericCard"));
-            cleric.healthPoints = 0;
-            $(".clericHP").empty().append(cleric.healthPoints);
+            $(".clericGraveyard").addClass("character");
+            $(".clericHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "rogue") {
             $(".rogueGraveyard").css("background-color", "#990000");
             $(".rogueGraveyard").append($(".rogueCard"));
-            rogue.healthPoints = 0;
-            $(".rogueHP").empty().append(rogue.healthPoints);
+            $(".rogueGraveyard").addClass("character");
+            $(".rogueHP").empty().append(enemy.healthPoints);
         }
         enemy = resetObject;
         enemy.active = true;
         $(".enemyChosen").empty();
-        $(".enemyChosen").css("background-color", "rgb(66, 66, 66)");
+        $(".enemyChosen").css("background-color", "");
+        $(".enemyChosen").removeClass("character");
         $(".vsText").text("CHOOSE YOUR NEXT OPPONENT");
     }
 }
@@ -321,22 +331,10 @@ var gameReset = function() {
     enemyReset();
 }
 
-if(player.class == "none" && enemy.active == false) {
-    $(".vsText").text("CHOOSE YOUR CHARACTER");
-}
-else if(player.class !== "none" && enemy.active == false) {
-    $(".vsText").text("CHOOSE YOUR OPPONENT");
-}
-else if(player.class == "none" && enemy.active == true) {
-    $(".vsText").text("YOU LOSE");
-}
-else if(player.active === true && enemy.active == true) {
-    $(".vsText").text("VS.");
-}
-else {}
-
 
 $(document).ready(function() {
+
+    $(".vsText").text("CHOOSE YOUR CHARACTER");
 
     /* APPEND CURRENT HP TO CARD */
     $(".fighterHP").append(fighter.healthPoints);
@@ -375,19 +373,7 @@ $(document).ready(function() {
     });
 
 
-    if(player.class == "none" && enemy.active == false) {
-        $(".vsText").text("CHOOSE YOUR CHARACTER");
-    }
-    else if(player.class !== "none" && enemy.active == false) {
-        $(".vsText").text("CHOOSE YOUR OPPONENT");
-    }
-    else if(player.class == "none" && enemy.active == true) {
-        $(".vsText").text("YOU LOSE");
-    }
-    else if(player.active === true && enemy.active == true) {
-        $(".vsText").text("VS");
-    }
-    else {}
+
 
     $(".chooseText").on("click", function() {
         playerStats();
