@@ -1,6 +1,7 @@
 body {
     background-image: url("https://www.publicdomainpictures.net/pictures/70000/velka/old-parchment.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .container {
@@ -9,7 +10,7 @@ body {
 }
 .titleHeader {
     font-weight: bold;
-    font-size: 60px;
+    font-size: 50px;
 }
 .character {
     border-style: solid;
