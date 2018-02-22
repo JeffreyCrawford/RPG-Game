@@ -218,11 +218,11 @@ var attack = function() {
     console.log(playerStats());
     console.log(enemyStats());
     if(enemy.active === true && player.active === true){
+        counterAttack();
+        dealDamage();
         if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true && player.healthPoints !== 0 && enemy.healthPoints == 0) {
             $(".vsText").text("YOU WIN");
         }
-        counterAttack();
-        dealDamage();
     }
     else {}   
 }
