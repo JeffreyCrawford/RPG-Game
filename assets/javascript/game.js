@@ -104,6 +104,8 @@ var rogueStats = function() {
 
 /* CHOOSE CHARACTER EFFECTS */
 var chooseFighter = function() {
+    $(".enemyDamage").empty();
+    $(".playerDamage").empty();
     fighter.active = true;
     /* IF THE PLAYER HAS NOT CHOSEN THEIR CHARACTER (CHOOSE PLAYER CHARACTER) */
     if (player.class === "none") {     
@@ -132,6 +134,8 @@ var chooseFighter = function() {
 }
 var chooseWizard = function() {
     /* SEE VAR CHOOSEFIGHTER */
+    $(".enemyDamage").empty();
+    $(".playerDamage").empty();
     wizard.active = true;
     if (player.class === "none") {    
         Object.assign(player, wizard);
@@ -156,6 +160,8 @@ var chooseWizard = function() {
 }
 var chooseCleric = function() {
     /* SEE VAR CHOOSEFIGHTER */
+    $(".enemyDamage").empty();
+    $(".playerDamage").empty();
     cleric.active = true;
     if (player.class === "none") {
         Object.assign(player, cleric);
@@ -180,6 +186,8 @@ var chooseCleric = function() {
 }
 var chooseRogue = function() {
     /* SEE VAR CHOOSEFIGHTER */
+    $(".enemyDamage").empty();
+    $(".playerDamage").empty();
     rogue.active = true;
     if (player.class === "none") {
         Object.assign(player, rogue);
@@ -206,21 +214,27 @@ var chooseRogue = function() {
 
 /* COMBAT FUNCTIONS */
 var attack = function() {
-    if((enemy.active === true) && (player.active === true)){
-        counterAttack();
-        dealDamage();
-        player.attackPower = (player.attackPower + player.baseAttackPower);
-        if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true && player.healthPoints !== 0 && enemy.healthPoints === 0) {
+    console.log(enemy.active);
+    console.log(playerStats());
+    console.log(enemyStats());
+    if(enemy.active === true && player.active === true){
+        if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true && player.healthPoints !== 0 && enemy.healthPoints == 0) {
             $(".vsText").text("YOU WIN");
         }
+        counterAttack();
+        dealDamage();
     }
     else {}   
 }
 var counterAttack = function() {
-    $(".enemyDamage").text("The enemy " + enemy.class + " dealt " + enemy.counterAttackPower + " points of damage!");
     player.healthPoints = (player.healthPoints - enemy.counterAttackPower);
+    
     /* IF PLAYER IS STILL ALIVE, ADJUST THEIR HP */
     if(player.healthPoints > 0) {
+        if(enemy.class === "none") {}
+        else {
+            $(".enemyDamage").text("The enemy " + enemy.class + " dealt " + enemy.counterAttackPower + " points of damage!");
+        }
         if(player.class === "fighter") {
             $(".fighterHP").empty().append(player.healthPoints);
         }
@@ -262,7 +276,7 @@ var counterAttack = function() {
             $(".rogueHP").empty().append(player.healthPoints);
         }  
         Object.assign(player, resetObject);
-        $(".playerDamage").empty();
+        
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -270,9 +284,17 @@ var counterAttack = function() {
     }
 }
 var dealDamage = function() {
-    $(".playerDamage").text(" you dealt " + player.attackPower + " points of damage!")
     enemy.healthPoints = (enemy.healthPoints - player.attackPower);
+
+    if(player.class === "none") {
+        $(".playerDamage").empty();
+    }
+    else {
+        $(".playerDamage").text(" you dealt " + player.attackPower + " points of damage!")
+    }
+
     if(enemy.healthPoints > 0) {
+        player.attackPower = (player.attackPower + player.baseAttackPower)
         if(enemy.class === "fighter") {
             $(".fighterHP").empty().append(enemy.healthPoints);
         }
@@ -287,6 +309,7 @@ var dealDamage = function() {
         }
     }
     else {
+        enemy.active = false;
         enemy.healthPoints = 0;
         if(enemy.class === "fighter") {
             $(".fighterGraveyard").css("background-color", "#990000");
@@ -313,7 +336,6 @@ var dealDamage = function() {
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
         Object.assign(enemy, resetObject);
-        $(".enemyDamage").empty();
         $(".enemyChosen").empty();
         $(".enemyChosen").css("background-color", "");
         $(".enemyChosen").removeClass("character");
