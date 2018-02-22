@@ -216,30 +216,35 @@ var counterAttack = function() {
             /* CHANGE COLORS, MOVE CARD TO GRAVEYARD CHANGE HP TO 0 */
             $(".fighterGraveyard").css("background-color", "#009933");
             $(".fighterGraveyard").append($(".fighterCard"));
+            $(".fighterCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".fighterGraveyard").addClass("character");
             $(".fighterHP").empty().append(player.healthPoints);
         }
         else if(player.class === "wizard") {
             $(".wizardGraveyard").css("background-color", "#009933");
             $(".wizardGraveyard").append($(".wizardCard"));
+            $(".wizardCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".wizardGraveyard").addClass("character");
             $(".wizardHP").empty().append(player.healthPoints);
         }
         else if(player.class === "cleric") {
             $(".clericGraveyard").css("background-color", "#009933");
             $(".clericGraveyard").append($(".clericCard"));
+            $(".clericCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".clericGraveyard").addClass("character");
             $(".clericHP").empty().append(player.healthPoints);
         }
         else if(player.class === "rogue") {
             $(".rogueGraveyard").css("background-color", "#009933");
             $(".rogueGraveyard").append($(".rogueCard"));
+            $(".rogueCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(player.healthPoints);
         }  
         /* CHANGE PLAYER COMBAT ZONE COLORS, REMOVE CARD, SAY YOU LOSE */
         player.active = false;
         $(".playerDamage").empty();
+        $(".enemyDamage").empty();
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -284,28 +289,28 @@ var dealDamage = function() {
             /* CHANGE COLORS, MOVE CARD TO GRAVEYARD CHANGE HP TO 0 */
             $(".fighterGraveyard").css("background-color", "#990000");
             $(".fighterGraveyard").append($(".fighterCard"));
-
+            $(".fighterCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".fighterGraveyard").addClass("character");
             $(".fighterHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "wizard") {
             $(".wizardGraveyard").css("background-color", "#990000");
             $(".wizardGraveyard").append($(".wizardCard"));
-
+            $(".wizardCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".wizardGraveyard").addClass("character");
             $(".wizardHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "cleric") {
             $(".clericGraveyard").css("background-color", "#990000");
             $(".clericGraveyard").append($(".clericCard"));
-
+            $(".clericCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".clericGraveyard").addClass("character");
             $(".clericHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "rogue") {
             $(".rogueGraveyard").css("background-color", "#990000");
             $(".rogueGraveyard").append($(".rogueCard"));
-            $(".rogueGraveyard").append(
+            $(".rogueCard").append($("<img class='skull' src='assets/images/skull.png' />"));
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
@@ -316,8 +321,7 @@ var dealDamage = function() {
         $(".enemyChosen").removeClass("character");
         /* IF PLAYER IS DEAD, SAY YOU LOSE, OTHERWISE SAY CHOOSE NEXT OPPONENT */
         if(player.healthPoints === 0) {
-            $(".vsText").text("YOU LOSE")
-            ;
+            $(".vsText").text("YOU LOSE");
             $(".playerDamage").empty();
         }
         else {
@@ -371,6 +375,7 @@ var reset = function() {
     Object.assign(enemy, resetObject);
     $(".playerDamage").empty();
     $(".enemyDamage").empty();
+    $(".skull").remove();
     fighter.active = false;
     wizard.active = false;
     cleric.active = false;
