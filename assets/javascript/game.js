@@ -25,7 +25,7 @@ var resetObject = {
 }
 var fighter = {
     class: "fighter",
-    healthPoints: 90,
+    healthPoints: 110,
     attackPower: 10,
     counterAttackPower: 10,
     baseAttackPower: 10,
@@ -41,7 +41,7 @@ var wizard = {
 }
 var cleric = {
     class: "cleric",
-    healthPoints: 150,
+    healthPoints: 145,
     attackPower: 5,
     counterAttackPower: 5,
     baseAttackPower: 5,
