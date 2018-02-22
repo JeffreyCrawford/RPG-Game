@@ -21,7 +21,7 @@ var resetObject = {
     attackPower: 0,
     counterAttackPower: 0,
     baseAttackPower: 0,
-    active: false,
+    active: true,
 }
 var fighter = {
     class: "fighter",
@@ -55,7 +55,6 @@ var rogue = {
     baseAttackPower: 15,
     active: false,
 }
-
 
 
 /* CONSOLE LOG STATS */
@@ -108,7 +107,7 @@ var chooseFighter = function() {
     fighter.active = true;
     /* IF THE PLAYER HAS NOT CHOSEN THEIR CHARACTER (CHOOSE PLAYER CHARACTER) */
     if (player.class === "none") {     
-        player = fighter;
+        Object.assign(player, fighter);
         /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".characterChosen").append($(".fighterCard"));
         $(".characterChosen").addClass("character");
@@ -121,7 +120,7 @@ var chooseFighter = function() {
     }
     /* IF THE PLAYER HAS CHOSEN A CHARACTER (CHOOSE ENEMY) */
     else {
-        enemy = fighter;
+        Object.assign(enemy, fighter);
         /* MOVES ENEMY CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".enemyChosen").empty().append($(".fighterCard"));
         $(".enemyChosen").addClass("character");
@@ -135,9 +134,10 @@ var chooseWizard = function() {
     /* SEE VAR CHOOSEFIGHTER */
     wizard.active = true;
     if (player.class === "none") {    
-        player = wizard;
+        Object.assign(player, wizard);
         $(".characterChosen").append($(".wizardCard"));
         $(".characterChosen").addClass("character");
+        $(".characterWizard").removeClass("character");
         $(".characterChosen").css("background-color", "#009933");
         $(".characterFighter").css("background-color", "#990000");
         $(".characterCleric").css("background-color", "#990000");
@@ -145,7 +145,7 @@ var chooseWizard = function() {
         $(".vsText").text("CHOOSE YOUR OPPONENT");
     }
     else {
-        enemy = wizard;
+        Object.assign(enemy, wizard);
         $(".enemyChosen").empty().append($(".wizardCard"));
         $(".enemyChosen").addClass("character");
         $(".enemyChosen").css("background-color", "#990000");
@@ -158,7 +158,7 @@ var chooseCleric = function() {
     /* SEE VAR CHOOSEFIGHTER */
     cleric.active = true;
     if (player.class === "none") {
-        player = cleric;
+        Object.assign(player, cleric);
         $(".characterChosen").append($(".clericCard"));
         $(".characterChosen").addClass("character");
         $(".characterCleric").removeClass("character");
@@ -169,7 +169,7 @@ var chooseCleric = function() {
         $(".vsText").text("CHOOSE YOUR OPPONENT");
     }
     else {
-        enemy = cleric;
+        Object.assign(enemy, cleric);
         $(".enemyChosen").empty().append($(".clericCard"));
         $(".enemyChosen").addClass("character");
         $(".enemyChosen").css("background-color", "#990000");
@@ -182,7 +182,7 @@ var chooseRogue = function() {
     /* SEE VAR CHOOSEFIGHTER */
     rogue.active = true;
     if (player.class === "none") {
-        player = rogue;
+        Object.assign(player, rogue);
         $(".characterChosen").append($(".rogueCard"));
         $(".characterChosen").addClass("character");
         $(".characterRogue").removeClass("character");
@@ -193,7 +193,7 @@ var chooseRogue = function() {
         $(".vsText").text("CHOOSE YOUR OPPONENT");
     }
     else {
-        enemy = rogue;
+        Object.assign(enemy, rogue);
         $(".enemyChosen").empty().append($(".rogueCard"));
         $(".enemyChosen").addClass("character");
         $(".enemyChosen").css("background-color", "#990000");
@@ -217,7 +217,8 @@ var attack = function() {
     else {}   
 }
 var counterAttack = function() {
-    player.healthPoints = (player.healthPoints - enemy.counterAttackPower)
+    $(".enemyDamage").text("The enemy " + enemy.class + " dealt " + enemy.counterAttackPower + " points of damage!");
+    player.healthPoints = (player.healthPoints - enemy.counterAttackPower);
     /* IF PLAYER IS STILL ALIVE, ADJUST THEIR HP */
     if(player.healthPoints > 0) {
         if(player.class === "fighter") {
@@ -260,7 +261,8 @@ var counterAttack = function() {
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(player.healthPoints);
         }  
-        player = resetObject;
+        Object.assign(player, resetObject);
+        $(".playerDamage").empty();
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -268,6 +270,7 @@ var counterAttack = function() {
     }
 }
 var dealDamage = function() {
+    $(".playerDamage").text(" you dealt " + player.attackPower + " points of damage!")
     enemy.healthPoints = (enemy.healthPoints - player.attackPower);
     if(enemy.healthPoints > 0) {
         if(enemy.class === "fighter") {
@@ -309,8 +312,8 @@ var dealDamage = function() {
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
-        enemy = resetObject;
-        enemy.active = true;
+        Object.assign(enemy, resetObject);
+        $(".enemyDamage").empty();
         $(".enemyChosen").empty();
         $(".enemyChosen").css("background-color", "");
         $(".enemyChosen").removeClass("character");
@@ -319,16 +322,56 @@ var dealDamage = function() {
 }
 
 
-/* RESETS */
-var playerReset = function() {
-    player = resetObject;    
-}
-var enemyReset = function() {
-    enemy = resetObject;
-}
-var gameReset = function() {
-    playerReset();
-    enemyReset();
+/* RESET */
+var reset = function() {
+    /* RESET HP */
+    $(".fighterHP").empty().append(fighter.healthPoints);
+    $(".wizardHP").empty().append(wizard.healthPoints);
+    $(".clericHP").empty().append(cleric.healthPoints);
+    $(".rogueHP").empty().append(rogue.healthPoints);
+
+    /* RESET COLORS */
+    /* CHARACTER PANEL */
+    $(".characterFighter").addClass("character");
+    $(".characterFighter").css("background-color", "");
+    $(".characterWizard").addClass("character");
+    $(".characterWizard").css("background-color", "");
+    $(".characterCleric").addClass("character");
+    $(".characterCleric").css("background-color", "");
+    $(".characterRogue").addClass("character");
+    $(".characterRogue").css("background-color", "");
+    /* COMBAT ZONE */
+    $(".characterChosen").removeClass("character");
+    $(".characterChosen").css("background-color", "");
+    $(".enemyChosen").removeClass("character");
+    $(".enemyChosen").css("background-color", "");
+    /* GRAVEYARD */
+    $(".fighterGraveyard").removeClass("character");
+    $(".fighterGraveyard").css("background-color", "");
+    $(".wizardGraveyard").removeClass("character");
+    $(".wizardGraveyard").css("background-color", "");
+    $(".clericGraveyard").removeClass("character");
+    $(".clericGraveyard").css("background-color", "");
+    $(".rogueGraveyard").removeClass("character");
+    $(".rogueGraveyard").css("background-color", "");
+
+    /* MOVE CARDS */
+    $(".characterFighter").append($(".fighterCard"));
+    $(".characterWizard").append($(".wizardCard"));
+    $(".characterCleric").append($(".clericCard"));
+    $(".characterRogue").append($(".rogueCard"));
+    
+    /* RESET OBJECTS */
+    Object.assign(player, resetObject);
+    Object.assign(enemy, resetObject);
+    $(".playerDamage").empty();
+    $(".enemyDamage").empty();
+    fighter.active = false;
+    wizard.active = false;
+    cleric.active = false;
+    rogue.active = false;
+    enemy.active = false;
+    $(".vsText").text("CHOOSE YOUR CHARACTER");
 }
 
 
@@ -336,7 +379,7 @@ $(document).ready(function() {
 
     $(".vsText").text("CHOOSE YOUR CHARACTER");
 
-    /* APPEND CURRENT HP TO CARD */
+    /* APPEND HP TO CARD */
     $(".fighterHP").append(fighter.healthPoints);
     $(".wizardHP").append(wizard.healthPoints);
     $(".clericHP").append(cleric.healthPoints);
@@ -368,17 +411,13 @@ $(document).ready(function() {
         else {}
     });
 
+
+    /* BUTTONS */
     $(".attackButton").on("click", function() {
         attack();
     });
-
-
-
-
-    $(".chooseText").on("click", function() {
-        playerStats();
-        enemyStats();
-        console.log(player.active);
-        console.log(enemy.active);
+    $(".resetButton").on("click", function() {
+        reset();
     });
+
 });

@@ -1,12 +1,11 @@
 body {
     background-image: url("https://www.publicdomainpictures.net/pictures/70000/velka/old-parchment.jpg");
+    background-size: cover;
 }
 
 .container {
     font-family: 'MedievalSharp', cursive;
     text-align: center;
-
-
 }
 .titleHeader {
     font-weight: bold;
@@ -59,6 +58,9 @@ sword {
     margin-right: -15px;
 }
 
+.vs {
+    margin: auto;
+}
 
 
 
