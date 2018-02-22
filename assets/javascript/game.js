@@ -4,36 +4,42 @@ var player = {
     healthPoints: 0,
     attackPower: 0,
     counterAttackPower: 0,
+    active: true,
 }
 var enemy = {
     class: "none",
     healthPoints: 0,
     attackPower: 0,
     counterAttackPower: 0,
+    active: true,
 }
 var fighter = {
     class: "fighter",
     healthPoints: 20,
     attackPower: 20,
     counterAttackPower: 20,
+    active: false,
 }
 var wizard = {
     class: "wizard",
     healthPoints: 15,
     attackPower: 15,
     counterAttackPower: 15,
+    active: false,
 }
 var cleric = {
     class: "cleric",
     healthPoints: 5,
     attackPower: 5,
     counterAttackPower: 5,
+    active: false,
 }
 var rogue = {
     class: "rogue",
     healthPoints: 10,
     attackPower: 10,
     counterAttackPower: 10,
+    active: false,
 }
 
 
@@ -78,28 +84,37 @@ var rogueStats = function() {
 
 /* CHOOSE CHARACTER EFFECTS */
 var chooseFighter = function() {
+    fighter.active = true;
+    /* IF THE PLAYER HAS NOT CHOSEN THEIR CHARACTER (CHOOSE PLAYER CHARACTER) */
     if (player.class === "none") {     
+        /* APPLY DEFAULT STATS FOR CHOSEN CHARACTER TO PLAYER */
         player.class = fighter.class;
         player.healthPoints = fighter.healthPoints;
         player.attackPower = fighter.attackPower;
         player.counterAttackPower = fighter.counterAttackPower;
+        /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".characterChosen").append($(".fighterCard"));
         $(".characterChosen").css("background-color", "#009933");
         $(".characterWizard").css("background-color", "#990000");
         $(".characterCleric").css("background-color", "#990000");
         $(".characterRogue").css("background-color", "#990000");
     }
+    /* IF THE PLAYER HAS CHOSEN A CHARACTER (CHOOSE ENEMY) */
     else {
+        /* APPLY DEFAULT STATS FOR CHOSEN CHARACTER TO ENEMY */
         enemy.class = fighter.class;
         enemy.healthPoints = fighter.healthPoints;
         enemy.attackPower = fighter.attackPower;
         enemy.counterAttackPower = fighter.counterAttackPower;
+        /* MOVES ENEMY CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
         $(".characterFighter").css("background-color", "rgb(66, 66, 66)");
         $(".enemyChosen").css("background-color", "#990000");
         $(".enemyChosen").empty().append($(".fighterCard"));
     }
 }
 var chooseWizard = function() {
+    /* SEE VAR CHOOSEFIGHTER */
+    wizard.active = true;
     if (player.class === "none") {    
         player.class = wizard.class;
         player.healthPoints = wizard.healthPoints;
@@ -122,6 +137,8 @@ var chooseWizard = function() {
     }
 }
 var chooseCleric = function() {
+    /* SEE VAR CHOOSEFIGHTER */
+    cleric.active = true;
     if (player.class === "none") {
         player.class = cleric.class;
         player.healthPoints = cleric.healthPoints;
@@ -144,6 +161,8 @@ var chooseCleric = function() {
     }
 }
 var chooseRogue = function() {
+    /* SEE VAR CHOOSEFIGHTER */
+    rogue.active = true;
     if (player.class === "none") {
         player.class = rogue.class;
         player.healthPoints = rogue.healthPoints;
@@ -166,6 +185,7 @@ var chooseRogue = function() {
     }
 }
 
+
 /* COMBAT FUNCTIONS */
 var attack = function() {
     counterAttack();
@@ -173,20 +193,43 @@ var attack = function() {
 }
 var counterAttack = function() {
     player.healthPoints = (player.healthPoints - enemy.counterAttackPower)
+    /* IF PLAYER IS STILL ALLIVE, ADJUST THEIR HP */
     if(player.healthPoints > 0) {
-        $(".playerHP").empty().append(player.healthPoints);
+        if(player.class === "fighter") {
+            $(".fighterHP").empty().append(player.healthPoints);
+        }
+        else if(player.class === "wizard") {
+            $(".wizardHP").empty().append(player.healthPoints);
+        }
+        else if(player.class === "cleric") {
+            $(".clericHP").empty().append(player.healthPoints);
+        }
+        else if(player.class === "rogue") {
+            $(".rogueHP").empty().append(player.healthPoints);
+        }
     }
+    /* IF PLAYER IS DEAD, REMOVE THEIR CARD, CHANGE THE COLORS, AND SAY THEY LOSE */
     else {
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "rgb(66, 66, 66)");
         alert("YOU LOSE!");
     }
 }
-
 var dealDamage = function() {
     enemy.healthPoints = (enemy.healthPoints - player.attackPower);
     if(enemy.healthPoints > 0) {
-        $(".enemyHP").empty().append(enemy.healthPoints);
+        if(enemy.class === "fighter") {
+            $(".fighterHP").empty().append(enemy.healthPoints);
+        }
+        else if(enemy.class === "wizard") {
+            $(".wizardHP").empty().append(enemy.healthPoints);
+        }
+        else if(enemy.class === "cleric") {
+            $(".clericHP").empty().append(enemy.healthPoints);
+        }
+        else if(enemy.class === "rogue") {
+            $(".rogueHP").empty().append(enemy.healthPoints);
+        }
     }
     else {
         $(".enemyChosen").empty();
@@ -195,47 +238,69 @@ var dealDamage = function() {
     }
 }
 
-var enemyReset = function () {
+
+/* RESETS */
+var playerReset = function() {
+    player.class = "none";
+    player.healthPoints = 0;
+    player.attackPower = 0;
+    player.counterAttackPower = 0;    
+}
+var enemyReset = function() {
     enemy.class = "none";
     enemy.healthPoints = 0;
     enemy.attackPower = 0;
     enemy.counterAttackPower = 0;
 }
+var gameReset = function() {
+    playerReset();
+    enemyReset();
+}
+
 
 $(document).ready(function() {
 
-   
     /* APPEND CURRENT HP TO CARD */
     $(".fighterHP").append(fighter.healthPoints);
     $(".wizardHP").append(wizard.healthPoints);
     $(".clericHP").append(cleric.healthPoints);
     $(".rogueHP").append(rogue.healthPoints);
 
-    /* CHOOSE YOUR CHARACTER */
+    /* CHOOSE YOUR CHARACTER ON CLICK EVENTS */
+    $(".fighterCard").on("click", function() {
+        if (fighter.active === false) {
+        chooseFighter();
+        }
+        else {}
+    });
+    $(".wizardCard").on("click", function() {
+        if (wizard.active === false) {
+        chooseWizard();
+        }
+        else {}
+    });
+    $(".clericCard").on("click", function() {
+        if (cleric.active === false) {
+        chooseCleric();
+        }
+        else {}
+    });
+    $(".rogueCard").on("click", function() {
+        if (rogue.active === false) {
+        chooseRogue();
+        }
+        else {}
+    });
+
+    $(".attackButton").on("click", function() {
+        attack();
+    });
 
 
-        $(".fighterCard").on("click", function() {
-            chooseFighter();
-        });
-        $(".wizardCard").on("click", function() {
-            chooseWizard();
-        });
-        $(".clericCard").on("click", function() {
-            chooseCleric();
-        });
-        $(".rogueCard").on("click", function() {
-            chooseRogue();
-        });
-
-        $(".attackButton").on("click", function() {
-            attack();
-        });
-
-
-        $(".test").on("click", function() {
-            playerStats();
-            enemyStats();
-        });
+    $(".test").on("click", function() {
+        playerStats();
+        enemyStats();
+    });
 
 
 
