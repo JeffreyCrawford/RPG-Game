@@ -63,7 +63,7 @@ var chooseFighter = function() {
     $(".playerDamage").empty();
     fighter.active = true;
     /* CHOOSE PLAYER CHARACTER */
-    if (player.class === "none") {     
+    if (player.class === "none" && enemy.class === "none") {     
         /* ASSIGNS CLASS PROPERTIES TO PLAYER */
         Object.assign(player, fighter);
         /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS AND CENTER TEXT */
@@ -94,7 +94,7 @@ var chooseWizard = function() {
     $(".enemyDamage").empty();
     $(".playerDamage").empty();
     wizard.active = true;
-    if (player.class === "none") {    
+    if (player.class === "none" && enemy.class === "none") {    
         Object.assign(player, wizard);
         $(".characterChosen").append($(".wizardCard"));
         $(".characterChosen").addClass("character");
@@ -120,7 +120,7 @@ var chooseCleric = function() {
     $(".enemyDamage").empty();
     $(".playerDamage").empty();
     cleric.active = true;
-    if (player.class === "none") {
+    if (player.class === "none" && enemy.class === "none") {
         Object.assign(player, cleric);
         $(".characterChosen").append($(".clericCard"));
         $(".characterChosen").addClass("character");
@@ -146,7 +146,7 @@ var chooseRogue = function() {
     $(".enemyDamage").empty();
     $(".playerDamage").empty();
     rogue.active = true;
-    if (player.class === "none") {
+    if (player.class === "none" && enemy.class === "none") {
         Object.assign(player, rogue);
         $(".characterChosen").append($(".rogueCard"));
         $(".characterChosen").addClass("character");
@@ -238,6 +238,8 @@ var counterAttack = function() {
             $(".rogueHP").empty().append(player.healthPoints);
         }  
         /* CHANGE PLAYER COMBAT ZONE COLORS, REMOVE CARD, SAY YOU LOSE */
+        player.active = false;
+        $(".playerDamage").empty();
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -251,14 +253,14 @@ var dealDamage = function() {
     if(player.class === "none") {
         $(".playerDamage").empty();
     }
-    /* IF PLAYER IS ALIVE, SAY PLAYER DAMAGE MESSAGE */
-    else {
+    /* IF PLAYER IS ALIVE AND ENEMY IS ALIVE, SAY PLAYER DAMAGE MESSAGE AND APPLY DAMAGE */
+    else if(enemy.class !== "none") {
         $(".playerDamage").text(" You dealt " + player.attackPower + " points of damage!")
+        player.attackPower = (player.attackPower + player.baseAttackPower);
     }
+    else {}
     /* IF ENEMY IS ALIVE */
     if(enemy.healthPoints > 0) {
-        /* INCREASE PLAYER ATTACK POWER */
-        player.attackPower = (player.attackPower + player.baseAttackPower)
         /* CHECK FOR ENEMY CLASS AND CHANGE RESPECTIVE DISPLAYED HP */
         if(enemy.class === "fighter") {
             $(".fighterHP").empty().append(enemy.healthPoints);
@@ -282,24 +284,28 @@ var dealDamage = function() {
             /* CHANGE COLORS, MOVE CARD TO GRAVEYARD CHANGE HP TO 0 */
             $(".fighterGraveyard").css("background-color", "#990000");
             $(".fighterGraveyard").append($(".fighterCard"));
+
             $(".fighterGraveyard").addClass("character");
             $(".fighterHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "wizard") {
             $(".wizardGraveyard").css("background-color", "#990000");
             $(".wizardGraveyard").append($(".wizardCard"));
+
             $(".wizardGraveyard").addClass("character");
             $(".wizardHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "cleric") {
             $(".clericGraveyard").css("background-color", "#990000");
             $(".clericGraveyard").append($(".clericCard"));
+
             $(".clericGraveyard").addClass("character");
             $(".clericHP").empty().append(enemy.healthPoints);
         }
         else if(enemy.class === "rogue") {
             $(".rogueGraveyard").css("background-color", "#990000");
             $(".rogueGraveyard").append($(".rogueCard"));
+            $(".rogueGraveyard").append(
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
@@ -312,6 +318,7 @@ var dealDamage = function() {
         if(player.healthPoints === 0) {
             $(".vsText").text("YOU LOSE")
             ;
+            $(".playerDamage").empty();
         }
         else {
             $(".vsText").text("CHOOSE YOUR NEXT OPPONENT")
