@@ -290,7 +290,7 @@ var dealDamage = function() {
         $(".playerDamage").empty();
     }
     else {
-        $(".playerDamage").text(" you dealt " + player.attackPower + " points of damage!")
+        $(".playerDamage").text(" You dealt " + player.attackPower + " points of damage!")
     }
 
     if(enemy.healthPoints > 0) {
