@@ -275,8 +275,7 @@ var counterAttack = function() {
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(player.healthPoints);
         }  
-        Object.assign(player, resetObject);
-        
+
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -339,7 +338,13 @@ var dealDamage = function() {
         $(".enemyChosen").empty();
         $(".enemyChosen").css("background-color", "");
         $(".enemyChosen").removeClass("character");
-        $(".vsText").text("CHOOSE YOUR NEXT OPPONENT");
+        if(player.healthPoints === 0) {
+            $(".vsText").text("YOU LOSE")
+            ;
+        }
+        else {
+            $(".vsText").text("CHOOSE YOUR NEXT OPPONENT")
+        }
     }
 }
 
