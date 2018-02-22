@@ -33,7 +33,7 @@ var fighter = {
 }
 var wizard = {
     class: "wizard",
-    healthPoints: 70,
+    healthPoints: 65,
     attackPower: 20,
     counterAttackPower: 20,
     baseAttackPower: 20,
