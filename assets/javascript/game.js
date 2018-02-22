@@ -56,61 +56,17 @@ var rogue = {
     active: false,
 }
 
-
-/* CONSOLE LOG STATS */
-var playerStats = function() {
-    console.log(player.class);
-    console.log(player.healthPoints);
-    console.log(player.attackPower);
-    console.log(player.counterAttackPower);
-    console.log(player.baseAttackPower);
-}
-var enemyStats = function() {
-    console.log(enemy.class);
-    console.log(enemy.healthPoints);
-    console.log(enemy.attackPower);
-    console.log(enemy.counterAttackPower);
-    console.log(enemy.baseAttackPower);
-}
-var fighterStats = function() {
-    console.log(fighter.class);
-    console.log(fighter.healthPoints);
-    console.log(fighter.attackPower);
-    console.log(fighter.counterAttackPower);
-    console.log(fighter.baseAttackPower);
-}
-var wizardStats = function() {
-    console.log(wizard.class);
-    console.log(wizard.healthPoints);
-    console.log(wizard.attackPower);
-    console.log(wizard.counterAttackPower);
-    console.log(wizard.baseAttackPower);
-}
-var clericStats = function() {
-    console.log(cleric.class);
-    console.log(cleric.healthPoints);
-    console.log(cleric.attackPower);
-    console.log(cleric.counterAttackPower);
-    console.log(cleric.baseAttackPower);
-}
-var rogueStats = function() {
-    console.log(rogue.class);
-    console.log(rogue.healthPoints);
-    console.log(rogue.attackPower);
-    console.log(rogue.counterAttackPower);
-    console.log(rogue.baseAttackPower);
-}
-
-
 /* CHOOSE CHARACTER EFFECTS */
 var chooseFighter = function() {
+    /* CLEARS DAMAGE MESSAGES */
     $(".enemyDamage").empty();
     $(".playerDamage").empty();
     fighter.active = true;
-    /* IF THE PLAYER HAS NOT CHOSEN THEIR CHARACTER (CHOOSE PLAYER CHARACTER) */
+    /* CHOOSE PLAYER CHARACTER */
     if (player.class === "none") {     
+        /* ASSIGNS CLASS PROPERTIES TO PLAYER */
         Object.assign(player, fighter);
-        /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
+        /* MOVES CHOSEN CHARACTER TO COMBAT ZONE AND CHANGES COLORS AND CENTER TEXT */
         $(".characterChosen").append($(".fighterCard"));
         $(".characterChosen").addClass("character");
         $(".characterFighter").removeClass("character");
@@ -120,10 +76,11 @@ var chooseFighter = function() {
         $(".characterRogue").css("background-color", "#990000");
         $(".vsText").text("CHOOSE YOUR OPPONENT");
     }
-    /* IF THE PLAYER HAS CHOSEN A CHARACTER (CHOOSE ENEMY) */
+    /* CHOOSE ENEMY */
     else {
+        /* ASSIGNS CLASS PROPERTIES TO ENEMY */
         Object.assign(enemy, fighter);
-        /* MOVES ENEMY CHARACTER TO COMBAT ZONE AND CHANGES COLORS */
+        /* MOVES ENEMY CHARACTER TO COMBAT ZONE AND CHANGES COLORS AND CENTER TEXT*/
         $(".enemyChosen").empty().append($(".fighterCard"));
         $(".enemyChosen").addClass("character");
         $(".enemyChosen").css("background-color", "#990000");
@@ -214,12 +171,11 @@ var chooseRogue = function() {
 
 /* COMBAT FUNCTIONS */
 var attack = function() {
-    console.log(enemy.active);
-    console.log(playerStats());
-    console.log(enemyStats());
+    /* ONLY RUN COUNTERATTACK AND DEALDAMAGE IF THERE IS A PLAYER AND AN ENEMY */
     if(enemy.active === true && player.active === true){
         counterAttack();
         dealDamage();
+        /* IF ALL CHARACTERS HAVE BEEN PICKED, PLAYER IS ALIVE AND ENEMIES ARE DEAD, SAY YOU WIN */
         if(fighter.active == true && wizard.active == true && cleric.active == true && rogue.active == true && player.healthPoints !== 0 && enemy.healthPoints == 0) {
             $(".vsText").text("YOU WIN");
         }
@@ -227,14 +183,18 @@ var attack = function() {
     else {}   
 }
 var counterAttack = function() {
+    /* REDUCE PLAYER HP  */
     player.healthPoints = (player.healthPoints - enemy.counterAttackPower);
     
-    /* IF PLAYER IS STILL ALIVE, ADJUST THEIR HP */
+    /* IF PLAYER IS STILL ALIVE */
     if(player.healthPoints > 0) {
+        /* IF ENEMY IS STILL ALIVE, SAY ENEMY DAMAGE MESSAGE */
         if(enemy.class === "none") {}
         else {
             $(".enemyDamage").text("The enemy " + enemy.class + " dealt " + enemy.counterAttackPower + " points of damage!");
         }
+
+        /* CHECK FOR PLAYER CLASS AND CHANGE RESPECTIVE DISPLAYED HP */
         if(player.class === "fighter") {
             $(".fighterHP").empty().append(player.healthPoints);
         }
@@ -248,10 +208,12 @@ var counterAttack = function() {
             $(".rogueHP").empty().append(player.healthPoints);
         }
     }
-    /* IF PLAYER IS DEAD, REMOVE THEIR CARD, CHANGE THE COLORS, AND SAY THEY LOSE */
+    /* IF PLAYER IS DEAD */
     else {
         player.healthPoints = 0;
+        /* CHECK FOR PLAYER CLASS */
         if(player.class === "fighter") {
+            /* CHANGE COLORS, MOVE CARD TO GRAVEYARD CHANGE HP TO 0 */
             $(".fighterGraveyard").css("background-color", "#009933");
             $(".fighterGraveyard").append($(".fighterCard"));
             $(".fighterGraveyard").addClass("character");
@@ -275,7 +237,7 @@ var counterAttack = function() {
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(player.healthPoints);
         }  
-
+        /* CHANGE PLAYER COMBAT ZONE COLORS, REMOVE CARD, SAY YOU LOSE */
         $(".characterChosen").empty();
         $(".characterChosen").css("background-color", "");
         $(".characterChosen").removeClass("character");
@@ -283,17 +245,21 @@ var counterAttack = function() {
     }
 }
 var dealDamage = function() {
+    /* REDUCE ENEMY HP */
     enemy.healthPoints = (enemy.healthPoints - player.attackPower);
-
+    /* IF PLAYER IS DEAD, CLEAR DAMAGE MESSAGE */
     if(player.class === "none") {
         $(".playerDamage").empty();
     }
+    /* IF PLAYER IS ALIVE, SAY PLAYER DAMAGE MESSAGE */
     else {
         $(".playerDamage").text(" You dealt " + player.attackPower + " points of damage!")
     }
-
+    /* IF ENEMY IS ALIVE */
     if(enemy.healthPoints > 0) {
+        /* INCREASE PLAYER ATTACK POWER */
         player.attackPower = (player.attackPower + player.baseAttackPower)
+        /* CHECK FOR ENEMY CLASS AND CHANGE RESPECTIVE DISPLAYED HP */
         if(enemy.class === "fighter") {
             $(".fighterHP").empty().append(enemy.healthPoints);
         }
@@ -307,10 +273,13 @@ var dealDamage = function() {
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
     }
+    /* IF ENEMY IS DEAD */
     else {
         enemy.active = false;
         enemy.healthPoints = 0;
+        /* CHECK FOR ENEMY CLASS */
         if(enemy.class === "fighter") {
+            /* CHANGE COLORS, MOVE CARD TO GRAVEYARD CHANGE HP TO 0 */
             $(".fighterGraveyard").css("background-color", "#990000");
             $(".fighterGraveyard").append($(".fighterCard"));
             $(".fighterGraveyard").addClass("character");
@@ -334,10 +303,12 @@ var dealDamage = function() {
             $(".rogueGraveyard").addClass("character");
             $(".rogueHP").empty().append(enemy.healthPoints);
         }
+        /* RESET ENEMY STATS, CHANGE ENEMY COMBAT ZONE COLORS, REMOVE CARD */
         Object.assign(enemy, resetObject);
         $(".enemyChosen").empty();
         $(".enemyChosen").css("background-color", "");
         $(".enemyChosen").removeClass("character");
+        /* IF PLAYER IS DEAD, SAY YOU LOSE, OTHERWISE SAY CHOOSE NEXT OPPONENT */
         if(player.healthPoints === 0) {
             $(".vsText").text("YOU LOSE")
             ;
@@ -437,7 +408,6 @@ $(document).ready(function() {
         }
         else {}
     });
-
 
     /* BUTTONS */
     $(".attackButton").on("click", function() {
