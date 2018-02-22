@@ -266,27 +266,27 @@ $(document).ready(function() {
     $(".clericHP").append(cleric.healthPoints);
     $(".rogueHP").append(rogue.healthPoints);
 
-    /* CHOOSE YOUR CHARACTER ON CLICK EVENTS */
+    /* CHOOSE CHARACTER ON CLICK EVENTS */
     $(".fighterCard").on("click", function() {
-        if (fighter.active === false) {
+        if (fighter.active === false && enemy.class === "none") {
         chooseFighter();
         }
         else {}
     });
     $(".wizardCard").on("click", function() {
-        if (wizard.active === false) {
+        if (wizard.active === false && enemy.class === "none") {
         chooseWizard();
         }
         else {}
     });
     $(".clericCard").on("click", function() {
-        if (cleric.active === false) {
+        if (cleric.active === false && enemy.class === "none") {
         chooseCleric();
         }
         else {}
     });
     $(".rogueCard").on("click", function() {
-        if (rogue.active === false) {
+        if (rogue.active === false && enemy.class === "none") {
         chooseRogue();
         }
         else {}
