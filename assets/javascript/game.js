@@ -25,7 +25,7 @@ var resetObject = {
 }
 var fighter = {
     class: "fighter",
-    healthPoints: 110,
+    healthPoints: 85,
     attackPower: 10,
     counterAttackPower: 10,
     baseAttackPower: 10,
@@ -33,26 +33,26 @@ var fighter = {
 }
 var wizard = {
     class: "wizard",
-    healthPoints: 65,
-    attackPower: 20,
-    counterAttackPower: 20,
-    baseAttackPower: 20,
+    healthPoints: 75,
+    attackPower: 5,
+    counterAttackPower: 15,
+    baseAttackPower: 15,
     active: false,
 }
 var cleric = {
     class: "cleric",
-    healthPoints: 145,
+    healthPoints: 120,
     attackPower: 5,
     counterAttackPower: 5,
-    baseAttackPower: 5,
+    baseAttackPower: 10,
     active: false,
 }
 var rogue = {
     class: "rogue",
-    healthPoints: 80,
-    attackPower: 15,
-    counterAttackPower: 15,
-    baseAttackPower: 15,
+    healthPoints: 60,
+    attackPower: 30,
+    counterAttackPower: 20,
+    baseAttackPower: 10,
     active: false,
 }
 
